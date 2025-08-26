@@ -1,0 +1,11 @@
+Requirement ID,Requirement Type,Link to process,Requirement Description,Comment,Requirement Active?
+URS-001,Functional,User Management,User shall be able to login with username and password,Critical for system access,Yes
+URS-002,Security,Authentication,System must validate user credentials against secure database,Implement strong encryption,Yes
+URS-003,Interface,Payment Gateway,Application shall integrate with external payment processing system,Third-party API required,Yes
+URS-004,Functional,Report Generation,System shall generate monthly financial reports in PDF format,Automated scheduling needed,Yes
+URS-005,Non-functional,Performance,Application response time shall not exceed 2 seconds for any user action,Critical performance requirement,Yes
+URS-006,Functional,Data Export,Users shall be able to export data to Excel and CSV formats,Multiple format support,Yes
+URS-007,Security,Data Protection,All sensitive data must be encrypted at rest and in transit,Compliance requirement,Yes
+URS-008,Interface,Email Integration,System shall send automated email notifications to users,SMTP configuration needed,Yes
+URS-009,Functional,Search Functionality,Users shall be able to search records using multiple criteria,Advanced filtering required,Yes
+URS-010,Non-functional,Scalability,System shall support up to 1000 concurrent users,Load testing required,No

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Enhancement Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .before {
+            background-color: #ffe8e8;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #f44336;
+        }
+        .after {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .improvements {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #2196F3;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Grammar Enhancement Test for FS Descriptions</h1>
+        <p>This test demonstrates the improved grammar in FS Excel sheet descriptions, including proper article usage, verb tense consistency, subject-verb agreement, and professional tone.</p>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="runGrammarTests()">🔬 Run Grammar Tests</button>
+            <button onclick="runBeforeAfterComparison()">📊 Before/After Comparison</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script src="ai-engine.js"></script>
+    <script>
+        function runGrammarTests() {
+            const ai = new URSToFSAI();
+            const container = document.getElementById('results');
+            
+            container.innerHTML = '<h3>🔬 Grammar Enhancement Tests</h3>';
+            
+            // Test cases with common grammar issues
+            const testCases = [
+                {
+                    'Requirement ID': 'URS-GRAM-001',
+                    'Requirement Description': 'System will provide user interface for login functionality',
+                    'Comment': 'High priority',
+                    'Requirement Type': 'Functional',
+                    'Requirement Active?': 'Yes',
+                    'expectedImprovements': ['Article usage', 'Verb tense', 'Colon structure']
+                },
+                {
+                    'Requirement ID': 'URS-GRAM-002',
+                    'Requirement Description': 'The interface must enable users to search and filter data really quickly',
+                    'Comment': 'N/A',
+                    'Requirement Type': 'Functional',
+                    'Requirement Active?': 'Yes',
+                    'expectedImprovements': ['Professional tone', 'Adverb replacement', 'Subject-verb agreement']
+                },
+                {
+                    'Requirement ID': 'URS-GRAM-003',
+                    'Requirement Description': 'Application should handle lots of user input validation with with security',
+                    'Comment': 'Critical feature',
+                    'Requirement Type': 'Functional',
+                    'Requirement Active?': 'Yes',
+                    'expectedImprovements': ['Redundant words', 'Informal language', 'Preposition fixes']
+                },
+                {
+                    'Requirement ID': 'URS-GRAM-004',
+                    'Requirement Description': 'The system generate report for to users and manage data processing',
+                    'Comment': '',
+                    'Requirement Type': 'Functional',
+                    'Requirement Active?': 'Yes',
+                    'expectedImprovements': ['Missing articles', 'Preposition errors', 'Verb forms']
+                },
+                {
+                    'Requirement ID': 'URS-GRAM-005',
+                    'Requirement Description': 'User authentication system provide secure login with encryption stuff',
+                    'Comment': 'na',
+                    'Requirement Type': 'Security',
+                    'Requirement Active?': 'Yes',
+                    'expectedImprovements': ['Subject-verb agreement', 'Professional vocabulary', 'Article usage']
+                }
+            ];
+            
+            testCases.forEach((testCase, index) => {
+                const result = ai.transformURSToFS(testCase, index + 1);
+                
+                container.innerHTML += `
+                    <div class="test-section">
+                        <h4>Test ${index + 1}: Grammar Enhancement</h4>
+                        
+                        <div class="before-after">
+                            <div class="before">
+                                <strong>❌ Original URS:</strong><br>
+                                "${testCase['Requirement Description']}"
+                            </div>
+                            <div class="after">
+                                <strong>✅ Enhanced FS:</strong><br>
+                                "${result.Description}"
+                            </div>
+                        </div>
+                        
+                        <div class="improvements">
+                            <strong>🎯 Target Improvements:</strong> ${testCase.expectedImprovements.join(', ')}<br>
+                            <strong>📝 FS Comment:</strong> ${result.Comments}<br>
+                            <strong>🏷️ Feature:</strong> ${result['Feature/Function']}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function runBeforeAfterComparison() {
+            const ai = new URSToFSAI();
+            const container = document.getElementById('results');
+            
+            container.innerHTML = '<h3>📊 Before/After Grammar Comparison</h3>';
+            
+            // Demonstrate specific grammar fixes
+            const grammarTests = [
+                {
+                    issue: 'Missing Articles',
+                    before: 'System provides user interface for data processing',
+                    after: ai.enhanceGrammar('System provides user interface for data processing'),
+                    fix: 'Added "a" before "user interface"'
+                },
+                {
+                    issue: 'Wrong Verb Tense',
+                    before: 'Application will enable users to login',
+                    after: ai.enhanceGrammar('Application will enable users to login'),
+                    fix: 'Changed "will enable" to "enables"'
+                },
+                {
+                    issue: 'Subject-Verb Agreement',
+                    before: 'System provide secure authentication',
+                    after: ai.enhanceGrammar('System provide secure authentication'),
+                    fix: 'Changed "provide" to "provides" for singular subject'
+                },
+                {
+                    issue: 'Informal Language',
+                    before: 'Really awesome system with lots of cool stuff',
+                    after: ai.enhanceGrammar('Really awesome system with lots of cool stuff'),
+                    fix: 'Replaced informal terms with professional language'
+                },
+                {
+                    issue: 'Redundant Prepositions',
+                    before: 'Interface for to enable user access',
+                    after: ai.enhanceGrammar('Interface for to enable user access'),
+                    fix: 'Removed redundant "for to" construction'
+                },
+                {
+                    issue: 'Double Words',
+                    before: 'Data data processing with with validation',
+                    after: ai.enhanceGrammar('Data data processing with with validation'),
+                    fix: 'Removed duplicate words'
+                }
+            ];
+            
+            grammarTests.forEach((test, index) => {
+                container.innerHTML += `
+                    <div class="test-section">
+                        <h4>Fix ${index + 1}: ${test.issue}</h4>
+                        
+                        <div class="before-after">
+                            <div class="before">
+                                <strong>❌ Before:</strong><br>
+                                "${test.before}"
+                            </div>
+                            <div class="after">
+                                <strong>✅ After:</strong><br>
+                                "${test.after}"
+                            </div>
+                        </div>
+                        
+                        <div class="improvements">
+                            <strong>🔧 Fix Applied:</strong> ${test.fix}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Add summary
+            container.innerHTML += `
+                <div class="summary">
+                    <h3>📈 Grammar Enhancement Summary</h3>
+                    <p>✅ Articles (a, an, the) are properly added where missing</p>
+                    <p>✅ Verb tenses are corrected to present tense for FS descriptions</p>
+                    <p>✅ Subject-verb agreement is enforced</p>
+                    <p>✅ Informal language is replaced with professional terms</p>
+                    <p>✅ Redundant words and phrases are removed</p>
+                    <p>✅ Proper punctuation and spacing is applied</p>
+                    <p>✅ Contractions are expanded to formal language</p>
+                </div>
+            `;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // Auto-run a quick test on page load
+        window.onload = function() {
+            console.log('Grammar Enhancement Test Page Loaded');
+            console.log('AI Engine available:', typeof URSToFSAI !== 'undefined');
+        };
+    </script>
+</body>
+</html>

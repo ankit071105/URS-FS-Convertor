@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced AI Engine Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .test-input {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .test-output {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .fs-result {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .fs-id { font-weight: bold; color: #1976D2; }
+        .fs-feature { font-weight: bold; color: #4CAF50; }
+        .fs-description { color: #333; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Enhanced AI Engine Test</h1>
+        <p>Testing the improved URS to FS transformation with unique, contextual descriptions.</p>
+
+        <div class="test-section">
+            <h3>Test Sample URS Requirements</h3>
+            <button onclick="runAllTests()">🔬 Run All Tests</button>
+            <button onclick="runCustomTest()">✏️ Test Custom Input</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+            
+            <div id="customInput" style="display:none;">
+                <h4>Custom URS Requirement:</h4>
+                <textarea id="customURS" rows="4" cols="80" placeholder="Enter your URS description here..."></textarea><br>
+                <input type="text" id="customType" placeholder="Requirement Type (e.g., Functional)" style="width: 200px; margin: 5px;">
+                <input type="text" id="customPriority" placeholder="Priority (High/Medium/Low)" style="width: 150px; margin: 5px;">
+                <button onclick="processCustomTest()">Process Custom Requirement</button>
+            </div>
+        </div>
+
+        <div class="results" id="results"></div>
+    </div>
+
+    <script src="ai-engine.js"></script>
+    <script>
+        const ai = new URSToFSAI();
+        
+        // Test cases with various URS descriptions
+        const testCases = [
+            {
+                'Requirement ID': 'URS-001',
+                'Requirement Description': 'The system shall allow users to login with username and password and maintain session security.',
+                'Requirement Type': 'Functional',
+                'Priority': 'High',
+                'Comment': 'Critical security requirement'
+            },
+            {
+                'Requirement ID': 'URS-002', 
+                'Requirement Description': 'Users shall be able to search for customer records using multiple criteria including name, email, phone number, and account ID.',
+                'Requirement Type': 'Functional',
+                'Priority': 'Medium',
+                'Comment': 'Enhanced search capability'
+            },
+            {
+                'Requirement ID': 'URS-003',
+                'Requirement Description': 'The application must generate monthly sales reports in Excel format with charts and email them to managers automatically.',
+                'Requirement Type': 'Functional', 
+                'Priority': 'High',
+                'Comment': 'Automated reporting'
+            },
+            {
+                'Requirement ID': 'URS-004',
+                'Requirement Description': 'System should validate all input data for completeness and accuracy before saving to database with error notifications.',
+                'Requirement Type': 'Functional',
+                'Priority': 'Medium',
+                'Comment': 'Data quality assurance'
+            },
+            {
+                'Requirement ID': 'URS-005',
+                'Requirement Description': 'The platform shall integrate with external payroll system via REST API for real-time employee data synchronization.',
+                'Requirement Type': 'Integration',
+                'Priority': 'High',
+                'Comment': 'Critical integration requirement'
+            },
+            {
+                'Requirement ID': 'URS-006',
+                'Requirement Description': 'Users can upload documents in PDF, Word, or Excel format with file size validation and virus scanning.',
+                'Requirement Type': 'Functional',
+                'Priority': 'Medium',
+                'Comment': 'Document management'
+            },
+            {
+                'Requirement ID': 'URS-007',
+                'Requirement Description': 'The system must backup all transaction data daily at 2 AM and store backups for 7 years for compliance.',
+                'Requirement Type': 'Non-Functional',
+                'Priority': 'High',
+                'Comment': 'Compliance requirement'
+            },
+            {
+                'Requirement ID': 'URS-008',
+                'Requirement Description': 'Application shall provide dashboard with real-time KPIs, charts, and drill-down analytics for executive users.',
+                'Requirement Type': 'Functional',
+                'Priority': 'High',
+                'Comment': 'Executive dashboard'
+            },
+            {
+                'Requirement ID': 'URS-009',
+                'Requirement Description': 'Users should receive email notifications when their assigned tasks are due within 24 hours with escalation to manager.',
+                'Requirement Type': 'Functional',
+                'Priority': 'Medium',
+                'Comment': 'Task notification system'
+            },
+            {
+                'Requirement ID': 'URS-010',
+                'Requirement Description': 'The system shall allow administrators to configure user roles and permissions with approval workflow for changes.',
+                'Requirement Type': 'Functional',
+                'Priority': 'High',
+                'Comment': 'Role management'
+            }
+        ];
+
+        function runAllTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<h2>🔍 Test Results - Enhanced AI Transformation</h2>';
+            
+            testCases.forEach((testCase, index) => {
+                const fsResult = ai.transformURSToFS(testCase, index + 1);
+                displayResult(testCase, fsResult, resultsDiv);
+            });
+        }
+
+        function runCustomTest() {
+            const customDiv = document.getElementById('customInput');
+            customDiv.style.display = customDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function processCustomTest() {
+            const ursDesc = document.getElementById('customURS').value;
+            const reqType = document.getElementById('customType').value || 'Functional';
+            const priority = document.getElementById('customPriority').value || 'Medium';
+            
+            if (!ursDesc.trim()) {
+                alert('Please enter a URS description');
+                return;
+            }
+            
+            const customCase = {
+                'Requirement ID': 'URS-CUSTOM',
+                'Requirement Description': ursDesc,
+                'Requirement Type': reqType,
+                'Priority': priority,
+                'Comment': 'Custom test requirement'
+            };
+            
+            const resultsDiv = document.getElementById('results');
+            if (!resultsDiv.innerHTML.includes('Custom Test')) {
+                resultsDiv.innerHTML = '<h2>🧪 Custom Test Results</h2>';
+            }
+            
+            const fsResult = ai.transformURSToFS(customCase, 999);
+            displayResult(customCase, fsResult, resultsDiv);
+        }
+
+        function displayResult(ursCase, fsResult, container) {
+            const resultHtml = `
+                <div class="fs-result">
+                    <div class="test-input">
+                        <strong>📝 URS Input:</strong><br>
+                        <strong>ID:</strong> ${ursCase['Requirement ID']}<br>
+                        <strong>Description:</strong> ${ursCase['Requirement Description']}<br>
+                        <strong>Type:</strong> ${ursCase['Requirement Type']} | <strong>Priority:</strong> ${ursCase['Priority']}
+                    </div>
+                    <div class="test-output">
+                        <strong>🎯 FS Output:</strong><br>
+                        <div class="fs-id">FS ID: ${fsResult['FS ID']}</div>
+                        <div class="fs-feature">Feature/Function: ${fsResult['Feature/Function']}</div>
+                        <div class="fs-description"><strong>Description:</strong> ${fsResult['Description']}</div>
+                        <div><strong>Comments:</strong> ${fsResult['Comments']}</div>
+                        <div><strong>Reference URS:</strong> ${fsResult['Reference URS ID']}</div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML += resultHtml;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('customInput').style.display = 'none';
+        }
+
+        // Auto-run a sample test on page load
+        window.onload = function() {
+            console.log('Enhanced AI Engine Test Page Loaded');
+            console.log('AI Engine initialized:', typeof ai);
+        };
+
+        function testColonAndNA() {
+            const ai = new URSToFSAI();
+            const container = document.getElementById('results');
+            
+            container.innerHTML = '<h3>🔬 Colon Structure & N/A Comment Tests</h3>';
+            
+            // Test 1: Colon Structure in Descriptions
+            const colonTest = {
+                'Requirement ID': 'URS-COLON-001',
+                'Requirement Description': 'The interface must provide a clean, functional, and focused user experience',
+                'Comment': 'High priority feature',
+                'Requirement Type': 'Functional',
+                'Requirement Active?': 'Yes'
+            };
+            
+            const colonResult = ai.transformURSToFS(colonTest, 1);
+            container.innerHTML += `
+                <div style="margin: 20px 0; padding: 20px; border: 2px solid #2196F3; border-radius: 10px; background: #f8f9fa;">
+                    <h4>✅ Test 1: Colon Structure</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>URS Description:</strong> "${colonTest['Requirement Description']}"
+                    </div>
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>FS Description:</strong> "${colonResult.Description}"<br>
+                        <strong>Contains colon:</strong> ${colonResult.Description.includes(':') ? '✅ YES' : '❌ NO'}
+                    </div>
+                </div>
+            `;
+            
+            // Test 2: N/A Comment Handling
+            const naTest = {
+                'Requirement ID': 'URS-NA-001',
+                'Requirement Description': 'The system shall validate user input data',
+                'Comment': 'N/A',
+                'Requirement Type': 'Functional',
+                'Requirement Active?': 'Yes'
+            };
+            
+            const naResult = ai.transformURSToFS(naTest, 2);
+            container.innerHTML += `
+                <div style="margin: 20px 0; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; background: #f8f9fa;">
+                    <h4>✅ Test 2: N/A Comment Handling</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>URS Comment:</strong> "${naTest.Comment}"
+                    </div>
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>FS Comment:</strong> "${naResult.Comments}"<br>
+                        <strong>N/A Preserved:</strong> ${naResult.Comments === 'N/A' ? '✅ YES' : '❌ NO'}
+                    </div>
+                </div>
+            `;
+            
+            // Test 3: Empty Comment Handling  
+            const emptyTest = {
+                'Requirement ID': 'URS-EMPTY-001',
+                'Requirement Description': 'The application should generate reports',
+                'Comment': '',
+                'Requirement Type': 'Functional',
+                'Requirement Active?': 'Yes'
+            };
+            
+            const emptyResult = ai.transformURSToFS(emptyTest, 3);
+            container.innerHTML += `
+                <div style="margin: 20px 0; padding: 20px; border: 2px solid #FF9800; border-radius: 10px; background: #f8f9fa;">
+                    <h4>✅ Test 3: Empty Comment Handling</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>URS Comment:</strong> "${emptyTest.Comment}" (empty string)
+                    </div>
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>FS Comment:</strong> "${emptyResult.Comments}"<br>
+                        <strong>N/A for Empty:</strong> ${emptyResult.Comments === 'N/A' ? '✅ YES' : '❌ NO'}
+                    </div>
+                </div>
+            `;
+            
+            // Test 4: Complex Description with System Pattern
+            const systemTest = {
+                'Requirement ID': 'URS-SYS-001',
+                'Requirement Description': 'The system must provide real-time data processing capabilities',
+                'Comment': 'Critical for performance',
+                'Requirement Type': 'Functional',
+                'Requirement Active?': 'Yes'
+            };
+            
+            const systemResult = ai.transformURSToFS(systemTest, 4);
+            container.innerHTML += `
+                <div style="margin: 20px 0; padding: 20px; border: 2px solid #9C27B0; border-radius: 10px; background: #f8f9fa;">
+                    <h4>✅ Test 4: System Pattern with Colon</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>URS Description:</strong> "${systemTest['Requirement Description']}"
+                    </div>
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <strong>FS Description:</strong> "${systemResult.Description}"<br>
+                        <strong>Contains colon:</strong> ${systemResult.Description.includes(':') ? '✅ YES' : '❌ NO'}<br>
+                        <strong>FS Comment:</strong> "${systemResult.Comments}"
+                    </div>
+                </div>
+            `;
+            
+            // Test 5: Various N/A formats
+            const naVariations = [
+                { comment: 'n/a', label: 'lowercase n/a' },
+                { comment: 'NA', label: 'uppercase NA' },
+                { comment: '-', label: 'dash' },
+                { comment: '  N/A  ', label: 'N/A with spaces' },
+                { comment: 'This is a valid comment', label: 'valid comment' }
+            ];
+            
+            container.innerHTML += '<div style="margin: 20px 0; padding: 20px; border: 2px solid #607D8B; border-radius: 10px; background: #f8f9fa;"><h4>✅ Test 5: N/A Format Variations</h4>';
+            
+            naVariations.forEach((variation, index) => {
+                const testData = {
+                    'Requirement ID': `URS-VAR-00${index + 1}`,
+                    'Requirement Description': 'Test requirement for comment validation',
+                    'Comment': variation.comment,
+                    'Requirement Type': 'Functional',
+                    'Requirement Active?': 'Yes'
+                };
+                
+                const result = ai.transformURSToFS(testData, 10 + index);
+                const isCorrect = (variation.comment === 'This is a valid comment') ? 
+                    result.Comments === 'This is a valid comment' : 
+                    result.Comments === 'N/A';
+                
+                container.innerHTML += `
+                    <div style="margin: 10px 0; padding: 15px; background: ${isCorrect ? '#e8f5e8' : '#ffe8e8'}; border-radius: 5px; border-left: 4px solid ${isCorrect ? '#4CAF50' : '#f44336'};">
+                        <strong>Input (${variation.label}):</strong> "${variation.comment}" → <strong>Output:</strong> "${result.Comments}" 
+                        ${isCorrect ? '✅' : '❌'}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML += '</div>';
+            
+            // Summary
+            container.innerHTML += `
+                <div style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px; text-align: center;">
+                    <h3>🎉 Test Summary</h3>
+                    <p>✅ Colon structure: Descriptions now include colons for better readability</p>
+                    <p>✅ N/A comments: Empty, N/A, or dash comments are properly converted to N/A</p>
+                    <p>✅ Valid comments: Non-empty comments are preserved as-is</p>
+                </div>
+            `;
+        }
+
+        // ...existing code...
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Upload Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Excel Upload Test</h1>
+    <input type="file" id="fileInput" accept=".xlsx,.xls">
+    <div id="output"></div>
+    
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            console.log('File selected:', file.name, file.size, file.type);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('File loaded, attempting to parse...');
+                try {
+                    const workbook = XLSX.read(e.target.result, { type: 'binary' });
+                    console.log('Workbook sheets:', workbook.SheetNames);
+                    
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    console.log('Data:', jsonData);
+                    document.getElementById('output').innerHTML = 
+                        '<h3>Success!</h3><pre>' + JSON.stringify(jsonData, null, 2) + '</pre>';
+                        
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerHTML = 
+                        '<h3>Error:</h3><p>' + error.message + '</p>';
+                }
+            };
+            reader.readAsBinaryString(file);
+        });
+    </script>
+</body>
+</html>
